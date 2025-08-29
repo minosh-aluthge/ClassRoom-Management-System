@@ -1,4 +1,4 @@
-# Database Setup Instructions
+# Database Setup Instructions for VIDUMINA
 
 Since database files (.mdf and .ldf) are excluded from the repository for security and size reasons, follow these steps to set up the database:
 
@@ -18,25 +18,29 @@ CREATE TABLE [dbo].[ADMIN] (
 );
 ```
 
-#### 2. REGISTER Table
+#### 2. REG Table (User Registration)
 ```sql
-CREATE TABLE [dbo].[REGISTER] (
-    [ID] INT IDENTITY(1,1) PRIMARY KEY,
-    [USERNAME] NVARCHAR(100) NOT NULL,
-    [EMAIL] NVARCHAR(100) NOT NULL,
-    [PASSWORD] NVARCHAR(100) NOT NULL,
-    [CREATED_DATE] DATETIME DEFAULT GETDATE()
+CREATE TABLE [dbo].[REG] (
+    [NAME] NVARCHAR(50) NOT NULL PRIMARY KEY,
+    [PASSWORD] NVARCHAR(50) NULL,
+    [DOB] NVARCHAR(50) NULL,
+    [GENDER] NVARCHAR(50) NULL,
+    [ADDRESS] NVARCHAR(50) NULL,
+    [CONTACTNO] NVARCHAR(50) NULL,
+    [SCHOOL] NVARCHAR(50) NULL,
+    [MEDIUM] NVARCHAR(50) NULL
 );
 ```
 
 #### 3. CLASS Table
 ```sql
 CREATE TABLE [dbo].[CLASS] (
-    [ID] INT IDENTITY(1,1) PRIMARY KEY,
-    [CLASS_NAME] NVARCHAR(100) NOT NULL,
-    [DESCRIPTION] NVARCHAR(500),
-    [CAPACITY] INT,
-    [CREATED_DATE] DATETIME DEFAULT GETDATE()
+    [NAME] NVARCHAR(50) NOT NULL,
+    [CLASS] NVARCHAR(50) NULL,
+    [FEES] NVARCHAR(50) NULL,
+    [PAYMENT] NVARCHAR(50) NULL,
+    [PASSWORD] NVARCHAR(50) NULL,
+    FOREIGN KEY ([NAME]) REFERENCES [dbo].[REG]([NAME])
 );
 ```
 
@@ -44,11 +48,14 @@ CREATE TABLE [dbo].[CLASS] (
 
 1. **Create Database**
    ```sql
-   CREATE DATABASE CLASSROOM_DB;
+   CREATE DATABASE VIDUMINA;
    ```
 
 2. **Run Table Creation Scripts**
-   - Execute the SQL scripts above in your database
+   - Execute the SQL scripts above in your database in the following order:
+     1. First create the ADMIN table
+     2. Then create the REG table 
+     3. Finally create the CLASS table (due to foreign key dependency)
 
 3. **Insert Sample Admin User**
    ```sql
@@ -56,14 +63,26 @@ CREATE TABLE [dbo].[CLASS] (
    ```
 
 4. **Update Connection String**
-   - Update the connection string in your source code files to match your SQL Server configuration
-   - Default format: `Data Source=YOUR_SERVER;Initial catalog=CLASSROOM_DB;Integrated Security=True`
+   - The current connection string is configured in `App.config`:
+   ```xml
+   <add name="vidumina.Properties.Settings.VIDUMINAConnectionString"
+        connectionString="Data Source=.\sqlexpress;Initial Catalog=VIDUMINA;Integrated Security=True"
+        providerName="System.Data.SqlClient" />
+   ```
+   - Update this connection string to match your SQL Server configuration if needed
 
 ## Configuration Files to Update:
-- Update connection strings in `*.cs` files that contain database connections
-- Modify `App.config` if it contains database connection settings
+- Update connection strings in `App.config` file
+- The project uses DataSet classes (`VIDUMINADataSet.xsd`) for database operations
 
-## Notes:
+## Important Notes:
+- The REG table uses NAME as the primary key (not an auto-increment ID)
+- The CLASS table has a foreign key relationship with REG table through the NAME field
+- All string fields are limited to 50 characters based on the XSD schema
 - Default admin credentials: Username: `admin`, Password: `admin123`
 - Change default credentials for production use
-- Ensure SQL Server service is running before launching the application
+- Ensure SQL Server Express service is running before launching the application
+
+## Database Relationships:
+- REG (Parent) → CLASS (Child) through NAME field
+- This allows tracking which classes each registered user is enrolled in
