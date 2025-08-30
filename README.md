@@ -101,12 +101,24 @@ The application includes the following main tables:
 
 ## 🖼️ Screenshots
 
-The `doc/` folder contains various screenshots showing:
-- Application home page
-- Login and registration forms
-- Admin panel
-- Class management interface
-- Database tables
+
+Below are some screenshots from the application, located in the `doc/` folder:
+
+<div align="center">
+
+<img src="doc/home.png" alt="Home Page" width="350" style="margin:10px;" />
+<img src="doc/login.png" alt="Login Form" width="350" style="margin:10px;" />
+<img src="doc/register.png" alt="Register Form" width="350" style="margin:10px;" />
+<img src="doc/admin.png" alt="Admin Panel" width="350" style="margin:10px;" />
+<img src="doc/addclass.png" alt="Add Class" width="350" style="margin:10px;" />
+<img src="doc/contact_us.png" alt="Contact Us" width="350" style="margin:10px;" />
+<img src="doc/Class table.png" alt="Class Table" width="350" style="margin:10px;" />
+<img src="doc/register table.png" alt="Register Table" width="350" style="margin:10px;" />
+<img src="doc/admin table.png" alt="Admin Table" width="350" style="margin:10px;" />
+
+</div>
+
+*For more screenshots and documentation, see the `doc/` folder.*
 
 ## 🎓 Academic Context
 
